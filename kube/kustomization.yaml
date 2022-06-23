@@ -1,0 +1,8 @@
+resources:
+  - project.yaml
+  - build.yaml
+  - serviceaccount.yaml
+  - deployment.yaml
+  - networking.yaml
+commonLabels:
+  app: quarkus-k8s-api-demo  

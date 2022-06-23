@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quarkus-k8s-api-demo
+  namespace: k8s-api-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quarkus-k8s-api-demo
+  template:
+    metadata:
+      labels:
+        app: quarkus-k8s-api-demo
+    spec:
+      containers:
+        - name: quarkus-k8s-api-demo
+          image: image-registry.openshift-image-registry.svc:5000/k8s-api-demo/quarkus-k8s-api-demo:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: JAVA_OPTS
+              value: >-
+                -Dquarkus.http.host=0.0.0.0
+                -Djava.util.logging.manager=org.jboss.logmanager.LogManager
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 10m
+              memory: 100Mi
+            limits:
+              cpu: 100m
+              memory: 200Mi
+      restartPolicy: Always
+      serviceAccountName: pod-lookup
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

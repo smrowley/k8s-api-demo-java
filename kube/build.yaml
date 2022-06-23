@@ -1,0 +1,28 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: quarkus-k8s-api-demo
+  namespace: k8s-api-demo
+spec:
+  lookupPolicy:
+    local: false
+---
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: quarkus-k8s-api-demo
+  namespace: k8s-api-demo
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: quarkus-k8s-api-demo:latest
+  successfulBuildsHistoryLimit: 5
+  failedBuildsHistoryLimit: 5
+  strategy:
+    dockerStrategy:
+      dockerfilePath: src/main/docker/Dockerfile.jvm
+  source:
+    git:
+      uri: https://github.com/smrowley/k8s-api-demo-java
+  runPolicy: Serial
