@@ -20,8 +20,12 @@ spec:
   successfulBuildsHistoryLimit: 5
   failedBuildsHistoryLimit: 5
   strategy:
-    dockerStrategy:
-      dockerfilePath: src/main/docker/Dockerfile.jvm
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: java:openjdk-11-ubi8
   source:
     git:
       uri: https://github.com/smrowley/k8s-api-demo-java
