@@ -1,5 +1,25 @@
 # k8s-api-example Project
 
+Apply the resources to the cluster:
+
+```shell
+kustomize build --reorder none kube/ | kubectl apply -f -
+```
+
+Start the app build:
+
+```shell
+oc start-build quarkus-k8s-api-demo -F
+```
+
+Restart the deployment:
+
+```shell
+oc rollout restart deploy quarkus-k8s-api-demo
+```
+
+# Quarkus Info
+
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
