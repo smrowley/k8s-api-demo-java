@@ -18,6 +18,20 @@ Restart the deployment:
 oc rollout restart deploy quarkus-k8s-api-demo
 ```
 
+Get the hostname and curl for pod info:
+
+```shell
+APP_HOST=$(oc get route --template='{{.spec.host}}' quarkus-k8s-api-demo)
+
+curl -k https://$APP_HOST/podinfo
+```
+
+Curl using label selectors:
+
+```shell
+curl -k https://$APP_HOST/podinfo?label1=sample,label2=example
+```
+
 # Quarkus Info
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
